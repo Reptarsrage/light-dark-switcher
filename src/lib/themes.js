@@ -5,8 +5,9 @@ import {
   fallbackColors,
   CUSTOM_BACKGROUND_DEFAULT_ALIGNMENT,
   advancedColorLabels,
-} from '/lib/constants.js';
-import defaultTheme from '/lib/default.js';
+} from './constants';
+import { bgImages } from "./assets";
+import defaultTheme from './default';
 
 export const makeTinycolor = (colorIn) => {
   const color = { ...colorIn };
@@ -25,7 +26,8 @@ export const makeTinycolor = (colorIn) => {
 
 export const colorToCSS = (colorIn) => makeTinycolor(colorIn).toRgbString();
 
-export const normalizeThemeBackground = (background) => null;
+export const normalizeThemeBackground = background =>
+  Object.keys(bgImages).includes(background) ? background : null;
 
 // Utility to ensure normal & consistent colors
 export const normalizeThemeColor = (name, data, defaultColor) => {
