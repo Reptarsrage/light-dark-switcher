@@ -20,6 +20,11 @@ try {
 async function updateTheme() {
   const urls = await browser.storage.local.get(null);
   const url = urls[currentMode === DARK ? 'dark' : 'light'];
+  
+  // no theme selected, don't do anything
+  if (!url) {
+    return;
+  }
 
   if (!url.startsWith('https://color.firefox.com/')) {
     // need to force the theme off and then on
@@ -39,6 +44,14 @@ async function updateTheme() {
   const customBackgrounds = {};
   const bgImages = () => {};
   const newTheme = convertToBrowserTheme(t, bgImages, customBackgrounds);
+
+  // ensure theme can switch between light and dark
+  newTheme.properties = { 
+    ...newTheme.properties, 
+    color_scheme: 'system', 
+    content_color_scheme: 'system'
+  }
+
   await browser.management.setEnabled('default-theme@mozilla.org', true);
   browser.theme.update(newTheme).catch((e) => {
     console.log('theme load fail', e.message);
@@ -58,7 +71,7 @@ function toggleTo(mode) {
   updateTheme();
 }
 
-window.matchMedia('(prefers-color-scheme: dark)').addListener((e) => {
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
   toggleTo(e.matches ? DARK : LIGHT);
 });
 
