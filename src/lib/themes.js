@@ -25,7 +25,7 @@ export const makeTinycolor = (colorIn) => {
 
 export const colorToCSS = (colorIn) => makeTinycolor(colorIn).toRgbString();
 
-export const normalizeThemeBackground = (background) => background;
+export const normalizeThemeBackground = (background) => null;
 
 // Utility to ensure normal & consistent colors
 export const normalizeThemeColor = (name, data, defaultColor) => {
